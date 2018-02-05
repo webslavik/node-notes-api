@@ -1,4 +1,5 @@
 const express = require('express');
+const {ObjectID} = require('mongodb');
 const bodyParser = require('body-parser');
 
 const {mongoose} = require('./db/mongoose');
@@ -9,6 +10,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
+// add Todo item
 app.post('/todos', (req, res) => {
   const todo = new Todo({
     text: req.body.text
@@ -22,6 +24,7 @@ app.post('/todos', (req, res) => {
     )
 });
 
+// get all Todo items
 app.get('/todos', (req, res) => {
   Todo
     .find()
@@ -29,6 +32,24 @@ app.get('/todos', (req, res) => {
       todos => res.send({todos}),
       error => res.status(400).send(error)
     )
+});
+
+// get Todo item
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id;
+
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send({errorMessage: 'Not valid ID'});
+  }
+
+  Todo
+    .findById(id)
+    .then(todo => {
+      if (!todo) return res.status(404).send({errorMessage: 'Not found Todo item'});
+      res.status(200).send({todo});
+    })
+    .catch(error => res.status(400));
+
 });
 
 app.listen(3000, () => {
