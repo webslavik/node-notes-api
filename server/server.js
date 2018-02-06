@@ -12,7 +12,7 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-// add Todo item
+// add
 app.post('/todos', (req, res) => {
   const todo = new Todo({
     text: req.body.text
@@ -26,7 +26,7 @@ app.post('/todos', (req, res) => {
     )
 });
 
-// get all Todo items
+// get all
 app.get('/todos', (req, res) => {
   Todo
     .find()
@@ -36,7 +36,7 @@ app.get('/todos', (req, res) => {
     )
 });
 
-// get Todo item
+// get
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id;
 
@@ -54,7 +54,7 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => res.status(400).send());
 });
 
-// delete Todo item
+// delete
 app.delete('/todos/:id', (req, res) => {
   const id = req.params.id;
 
@@ -72,7 +72,7 @@ app.delete('/todos/:id', (req, res) => {
     .catch(error => res.status(400).send());
 });
 
-// update Todo item
+// update
 app.patch('/todos/:id', (req, res) => {
   const id = req.params.id;
   const body = _.pick(req.body, ['text', 'completed']);
